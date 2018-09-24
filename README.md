@@ -1,2 +1,2 @@
 # CityFinder
-Mini project to get started with AngularJS
+Mini project to get started with *AngularJS*
