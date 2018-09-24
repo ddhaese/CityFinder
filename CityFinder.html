@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head><title>City-Finder</title></head>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<body>
+
+<div ng-app="City_App" ng-controller="City_Controller"> 	
+	<div class="w3-card-2 w3-margin" style="max-width:400px;">
+		<header class="w3-container w3-light-grey w3-padding-16">
+			<input ng-model="CityOfChoice"><button ng-click="FetchCity()">Fetch</button>
+			<h3>Response from Marketplace:</h3>
+		</header>
+		<ul class="w3-ul">
+			<li ng-repeat="City in Cities" class="w3-padding-16">
+				{{ City.city + " (" + City.state + " - " + City.country + ")" }}
+			</li>
+		</ul>
+	</div>
+</div>
+
+<script>
+	var City_App = angular.module ( "City_App", []);
+	City_App.controller ( "City_Controller", function ( $scope, $http ){
+		$scope.FavouriteCities = [ "Antwerpen", "Newcastle", "Valencia", "Antananarivo" ];
+		$scope.CityOfChoice = $scope.FavouriteCities [ Math.floor ( Math.random () * $scope.FavouriteCities.length )];
+		
+		$scope.FetchCity = function (){
+			var Query = "https://andruxnet-world-cities-v1.p.mashape.com/?query=" + $scope.CityOfChoice + "&searchby=city";
+
+			$http ({
+			  method: "GET",
+			  url: Query,
+			  headers: {
+				"X-Mashape-Key": "28KQQZziX3mshu8PTfV45i31b2kfp1pZO4YjsnJlZgkl9FvsSj",
+				"Accept": "application/json"
+			  }
+			}).then ( function ( response ){
+					$scope.Cities = response.data;
+				});
+		};
+	});
+</script>
+
+</body>
+</html>
